@@ -6,8 +6,8 @@ class AppError extends Error {
   }
 }
 
-class InserError extends AppError {
-  constructor(message = "Error insertando datos") {
+class InsertError extends AppError {
+  constructor(message = "Insert data error") {
     super(message, 422);
   }
 }
@@ -19,26 +19,26 @@ class ValidationError extends AppError {
 }
 
 class AuthError extends AppError {
-  constructor(message = "No autorizado") {
+  constructor(message = "Don't have enough permission") {
     super(message, 401);
   }
 }
 
 class ForbiddenError extends AppError {
-  constructor(message = " Acceso denegado") {
+  constructor(message = "Your access has been denied") {
     super(message, 403);
   }
 }
 
 class NotFoundError extends AppError {
-  constructor(message = "Recurso no encontrado") {
+  constructor(message = "Resource not found") {
     super(message, 404);
   }
 }
 
 export {
   AppError,
-  InserError,
+  InsertError,
   ValidationError,
   AuthError,
   ForbiddenError,

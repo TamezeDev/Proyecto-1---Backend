@@ -29,9 +29,24 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 1. Abrir una shell y situarse en la raíz del proyecto
 2. Ejecutar el siguiente script para poblar la base de datos
 > npm run seeds
-> 
 3. Para iniciar el servidor lanzar desde la consola el siguiente script:
-> npm run dev
+> npm run start
+
+---
+
+## Acceso a endpoints
+### *Géneros:*
+  Solo un administrador puede encargarse de realizar operaciones referentes al CRUD en los generos
+
+1. Añadir un género: 
+
+    Envío mediante POST a ....
+```javascript
+body
+{
+    name: "Punk" 
+}
+```
 
 ### Detalles
  - Como excepción de entrega académica se deja fuera de **gitignore** el fichero **env** con las variables de enntorno usadas en el proyecto.
