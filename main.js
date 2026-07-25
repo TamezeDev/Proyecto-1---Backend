@@ -1,16 +1,23 @@
 import express from "express";
 import dotenv from "dotenv";
-import { connectToDb, disconnectFromDb } from "./config/database.config.js";
+import { connectToDb } from "./config/database.config.js";
+import {
+  unexpectedError,
+  notFoundError,
+} from "./shared/middlewares/error.middleware.js";
 
 dotenv.config({ quiet: true });
 const PORT = process.env.PORT;
 
-const server = express();
+const api = express();
 
 const initBackend = async () => {
   connectToDb();
 
-  server.use(express.json());
+  api.use(express.json());
+
+  api.use(notFoundError);
+  api.use(unexpectedError);
 
   server.listen(PORT, () => {
     console.warn(`✅ SERVER STARTED AT ADDRESS: http://localhost:${PORT}`);
