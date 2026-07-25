@@ -9,7 +9,7 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 - El servidor conectará con un storage de almacenamiento para guardar las imágenes, generando una url pública.
 - Mediante control basado en roles, se limitará el acceso a distintas funcionalidades, garantizando la seguridad de acceso a los endpoints mediante los middlewares dedicados a ello.
 - Los datos se referenciarán mediante el id del Objeto.
-
+- Se hará uso de tokens de sesión para controlar el acceso a los usuarios
 ---
 
 ## Dependencias usadas
@@ -18,6 +18,7 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 -  Express (Enrutador y ejecución del server)
 -  Dotenv (Habilita acceso a las variables de entorno del file .env)
 -  Bcrypt (Codifica o compara contraseñas)
+-  JsonWebToken (JWT para comprobar sesiones activas, roles, ...)
 --- 
 
 ## Configuración
@@ -40,11 +41,26 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 
 1. Añadir un género: 
 
-    Envío mediante POST a ....
+    Envío mediante POST a http://localhost:2000/api/v1/genre/create
 ```javascript
 body
 {
-    name: "Punk" 
+    "name": "Punk" 
+}
+```
+
+### *Usuarios:*
+-  Un usuario puede registrarse y eliminar su cuenta. SOlo un admin puede eliminar cualquier cuenta
+-  Los usuarios pueden añadir, modificar o eliminar fotos de perfil
+
+1. Login de usuario: 
+
+    Envío mediante POST a  http://localhost:2000/api/v1/user/login 
+```javascript
+body
+{
+    "email": "Paco@test.com",
+    "password": "Paco1234"
 }
 ```
 

@@ -1,9 +1,15 @@
 import Genre from "../models/genre.model.js";
 import { InsertError, ValidationError } from "../../shared/errors/app.error.js";
-
+import { withoutBody } from "../../utils/validations.js";
 /* Add new genres to db */
 const insertGenre = async (req, res, next) => {
   try {
+    if (withoutBody(req.body, next)) return;
+    if (!req.body.name)
+      return next(
+        new ValidationError("The body sent hasn't been created successfully"),
+      );
+
     const isGenre = await Genre.findOne({ name: req.body.name });
 
     if (isGenre)
@@ -12,7 +18,7 @@ const insertGenre = async (req, res, next) => {
       );
 
     const newGenre = await Genre.create(req.body);
-    res.status(200).json(newGenre);
+    res.status(201).json(newGenre);
   } catch (error) {
     next(new InsertError(`Error: Failed insert new genre -> ${error}`));
   }

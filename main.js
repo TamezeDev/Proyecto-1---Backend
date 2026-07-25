@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 import genreRoutes from "./src/routes/genres.routes.js";
+import userRoutes from "./src/routes/users.routes.js";
 
 import { connectToDb } from "./config/database.config.js";
 import {
@@ -20,6 +21,7 @@ const initBackend = async () => {
   api.use(express.json());
   /* ROUTES */
   api.use("/api/v1/genre", genreRoutes);
+  api.use("/api/v1/user", userRoutes);
   /* MIDDLEWARES */
   api.use(notFoundError);
   api.use(unexpectedError);
