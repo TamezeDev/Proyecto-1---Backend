@@ -4,6 +4,7 @@ export default [
     lastname: "Martín",
     email: "lucia@test.com",
     password: "lucia123",
+    role: "admin",
     bornYear: 2000,
     albumsName: ["Voces de ultrarumba", "After Hours"],
     songsName: ["Voces de ultrarumba", "Blinding Lights"],

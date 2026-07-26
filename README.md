@@ -36,12 +36,20 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 ---
 
 ## Acceso a endpoints
+- Para el acceso general de todos los endpoint excepto para efectuar el login es necesario enviar el token de sesión mediante headers.
+
+```javascript
+headers
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjYxMmQxMWE1OWI5OGQyY2IzOTNhNSIsImlhdCI6MTc4NTA3NDU4NywiZXhwIjoxNzg1MTYwOTg3fQ.7ZyA18LgB-JVCfvNXCcrejCcfKP3BvmCeNp6oRSSpPs
+```
+
 ### *Géneros:*
-  Solo un administrador puede encargarse de realizar operaciones referentes al CRUD en los generos
+  Solo un administrador puede encargarse de realizar operaciones referentes a Create-Update-Delete en los generos
 
 1. Añadir un género: 
 
     Envío mediante POST a http://localhost:2000/api/v1/genre/create
+    
 ```javascript
 body
 {

@@ -19,7 +19,7 @@ class ValidationError extends AppError {
 }
 
 class AuthError extends AppError {
-  constructor(message = "Don't have enough permission") {
+  constructor(message = "You don't have enough permission") {
     super(message, 401);
   }
 }
