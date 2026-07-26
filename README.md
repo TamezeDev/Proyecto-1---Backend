@@ -36,7 +36,7 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 ---
 
 ## Acceso a endpoints
-- Para el acceso general de todos los endpoint excepto para efectuar el login es necesario enviar el token de sesión mediante headers.
+- Para el acceso general de todos los endpoint, excepto para efectuar el login y registro de un usuario, es necesario enviar el token de sesión mediante headers.
 
 ```javascript
 headers
@@ -49,7 +49,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjYxMmQxM
 1. Añadir un género: 
 
     Envío mediante POST a http://localhost:2000/api/v1/genre/create
-    
+
 ```javascript
 body
 {
@@ -58,7 +58,7 @@ body
 ```
 
 ### *Usuarios:*
--  Un usuario puede registrarse y eliminar su cuenta. SOlo un admin puede eliminar cualquier cuenta
+-  Un usuario puede registrarse y eliminar su cuenta. Solo un admin puede eliminar cualquier cuenta
 -  Los usuarios pueden añadir, modificar o eliminar fotos de perfil
 
 1. Login de usuario: 
@@ -72,5 +72,21 @@ body
 }
 ```
 
+2. Registro de usuario: 
+
+    Envío mediante POST a  http://localhost:2000/api/v1/user/create 
+```javascript
+body
+{
+  "name": "Juan",
+  "lastname": "Pérez",
+  "email": "Juan@test.com",
+  "password": "Juan1234",
+  "bornYear": 2002
+}
+```
+
 ### Detalles
+- El usuario administrador por defecto para las pruebas es:
+  >    email: "lucia@test.com,  password: "lucia123"
  - Como excepción de entrega académica se deja fuera de **gitignore** el fichero **env** con las variables de enntorno usadas en el proyecto.

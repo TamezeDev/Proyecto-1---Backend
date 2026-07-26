@@ -8,6 +8,7 @@ import {
 import { withoutBody } from "../../utils/validations.js";
 import { generateToken } from "../../utils/token.js";
 
+/* Check user credential returning jwt with userId */
 const login = async (req, res, next) => {
   try {
     if (withoutBody(req.body, next)) return;
@@ -29,4 +30,29 @@ const login = async (req, res, next) => {
   }
 };
 
-export { login };
+const createUser = async (req, res, next) => {
+  try {
+    if (withoutBody(req.body, next)) return;
+    if (
+      !req.body.name ||
+      !req.body.lastname ||
+      !req.body.email ||
+      !req.body.password ||
+      !req.body.bornYear
+    )
+      return next(
+        new ValidationError("The body sent hasn't been created successfully"),
+      );
+
+    const used = await User.findOne({ email: req.body.email });
+    if (used)
+      return next(new ValidationError("Email selected is already registered"));
+
+    const user = await User.create(req.body);
+    res.status(201).json(user);
+  } catch (error) {
+    next(AppError(`Inexpected failure creating user -> ${error}`));
+  }
+};
+
+export { login, createUser };
