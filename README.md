@@ -86,6 +86,24 @@ body
 }
 ```
 
+3. Borrado de usuario: 
+ 
+  - Solo un usuario admin tiene habilitado este endpoint que borra a cualquier usuario seleccionado
+
+    Envío mediante DELETE a  http://localhost:2000/api/v1/user/ 
+```javascript
+body
+{
+  "email": "daniel@test.com"
+}
+```
+
+  - Cualquier usurio eliminará su cuenta asociada al id del token enviado
+
+    Envío mediante DELETE a  http://localhost:2000/api/v1/user/myself
+
+---
+
 ### Detalles
 - El usuario administrador por defecto para las pruebas es:
   >    email: "lucia@test.com,  password: "lucia123"

@@ -13,6 +13,7 @@ const isAuth = (...allowedRoles) => {
       if (!jwt) return next(new ValidationError("Error: JWT is required"));
 
       const userId = verifyToken(jwt).id;
+      req.userId = userId;
       const userDb = await User.findById(userId);
 
       if (!userDb) return next(new ForbiddenError());
@@ -20,7 +21,7 @@ const isAuth = (...allowedRoles) => {
         return next(new AuthError());
       next();
     } catch (error) {
-      next(new AuthError());
+      next(new AuthError(error));
     }
   };
 };

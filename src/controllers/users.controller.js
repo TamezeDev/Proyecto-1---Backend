@@ -4,6 +4,7 @@ import {
   AppError,
   ValidationError,
   ForbiddenError,
+  NotFoundError,
 } from "../../shared/errors/app.error.js";
 import { withoutBody } from "../../utils/validations.js";
 import { generateToken } from "../../utils/token.js";
@@ -29,7 +30,7 @@ const login = async (req, res, next) => {
     next(new AppError(`Inexpected failure while login -> ${error}`));
   }
 };
-
+/* Create a new user account */
 const createUser = async (req, res, next) => {
   try {
     if (withoutBody(req.body, next)) return;
@@ -54,5 +55,35 @@ const createUser = async (req, res, next) => {
     next(AppError(`Inexpected failure creating user -> ${error}`));
   }
 };
-
-export { login, createUser };
+/* Delete user delected account */
+const deleteSelectedUser = async (req, res, next) => {
+  try {
+    if (withoutBody(req.body, next)) return;
+    if (!req.body.email)
+      return next(
+        new ValidationError("The body sent hasn't been created successfully"),
+      );
+    const userdeleted = await User.findOneAndDelete({ email: req.body.email });
+    if (!userdeleted)
+      return next(new NotFoundError("Email sent doesn't found in database"));
+    res
+      .status(200)
+      .json({ message: "User deleted succesfully", user: userdeleted });
+  } catch (error) {
+    next(AppError(`Inexpected failure deleting user -> ${error}`));
+  }
+};
+/* Delete user delected account */
+const deleteOwnself = async (req, res, next) => {
+  try {
+    const userdeleted = await User.findOneAndDelete({ _id: req.userId });
+    if (!userdeleted)
+      return next(new NotFoundError("User doesn't found in database"));
+    res
+      .status(200)
+      .json({ message: "User deleted succesfully", user: userdeleted });
+  } catch (error) {
+    next(AppError(`Inexpected failure deleting user -> ${error}`));
+  }
+};
+export { login, createUser, deleteSelectedUser, deleteOwnself };
