@@ -36,6 +36,12 @@ class NotFoundError extends AppError {
   }
 }
 
+class CloudinaryError extends AppError {
+  constructor(message = "Something failed updating cloudinary storage") {
+    super(message);
+  }
+}
+
 export {
   AppError,
   InsertError,
@@ -43,4 +49,5 @@ export {
   AuthError,
   ForbiddenError,
   NotFoundError,
+  CloudinaryError,
 };

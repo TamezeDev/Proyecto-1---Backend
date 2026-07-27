@@ -19,6 +19,9 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 -  Dotenv (Habilita acceso a las variables de entorno del file .env)
 -  Bcrypt (Codifica o compara contraseñas)
 -  JsonWebToken (JWT para comprobar sesiones activas, roles, ...)
+-  Multer (acceso a ficheros enviados)
+-  Storage Cloudinary (Guardado de imagenes remoto)
+  
 --- 
 
 ## Configuración
@@ -56,6 +59,7 @@ body
     "name": "Punk" 
 }
 ```
+<br>
 
 ### *Usuarios:*
 -  Un usuario puede registrarse y eliminar su cuenta. Solo un admin puede eliminar cualquier cuenta
@@ -71,6 +75,7 @@ body
     "password": "Paco1234"
 }
 ```
+<br>
 
 2. Registro de usuario: 
 
@@ -85,6 +90,7 @@ body
   "bornYear": 2002
 }
 ```
+<br>
 
 3. Borrado de usuario: 
  
@@ -102,12 +108,33 @@ body
 
     Envío mediante DELETE a  http://localhost:2000/api/v1/user/myself
 
+<br>
 
 4. Mostrar todos los usuarios: 
 
     Envío mediante GET a  http://localhost:2000/api/v1/user/ 
 
    - Se mostrarán los datos completos referenciados a otras colecciones también
+  
+  <br>
+
+
+5. Modificar  datos de usuario: (añadir imagen de perfil, modificar cuenta o datos personales...)
+
+    Envío mediante PUT a  http://localhost:2000/api/v1/user/ 
+```javascript
+FormData 
+{
+  "name": "Sara",
+  "email": "Juan@test.com",
+  "password": "Sara1234",
+  "image": imagen seleccionada
+}
+```
+- Nota: Recordar enviar siempre el jwt en authorization para validar el usuario
+
+<br>
+
 
 ---
 

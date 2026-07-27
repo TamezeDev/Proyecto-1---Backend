@@ -8,7 +8,7 @@ import {
 } from "../../shared/errors/app.error.js";
 import { withoutBody } from "../../utils/validations.js";
 import { generateToken } from "../../utils/token.js";
-import { populate } from "dotenv";
+import { deleteImgCloudinary } from "../../utils/cloudinary.util.js";
 
 /* Check user credential returning jwt with userId */
 const login = async (req, res, next) => {
@@ -124,5 +124,58 @@ const getUsers = async (req, res, next) => {
     next(new AppError(`Inexpected failure showing user list -> ${error}`));
   }
 };
+/* MODIFY USER DATA (SUCH AS ADD A NEW PROFILE PHOTO) */
+const modifyUser = async (req, res, next) => {
+  try {
+    const hasBody = req.body && Object.keys(req.body).length > 0;
 
-export { login, createUser, deleteSelectedUser, deleteOwnself, getUsers };
+    if (!hasBody && !req.file) {
+      return next(new ValidationError("You must send data or an image"));
+    }
+
+    const oldUser = await User.findOne({ _id: req.userId });
+    if (!oldUser)
+      return next(new NotFoundError("User doesn't found in database"));
+
+    const updatedData = { ...req.body };
+
+    if (req.body.password) {
+      const encodedPass = await bcrypt.hash(req.body.password, 10);
+      updatedData.password = encodedPass;
+    }
+
+    if (req.body.email && oldUser.email !== req.body.email) {
+      const usedEmail = await User.findOne({ email: req.body.email });
+      if (usedEmail) return next(new ValidationError("Email is already used"));
+    }
+
+    const oldImgId = oldUser.imgId;
+    if (req.file) {
+      updatedData.imgUrl = req.file.path;
+      updatedData.imgId = req.file.filename;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.userId, updatedData, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+
+    if (!updatedUser)
+      return next(new NotFoundError("User doesn't found in database"));
+
+    if (req.file && oldImgId) deleteImgCloudinary(oldImgId);
+
+    res.status(200).json({ message: "User modified succesfully", updatedUser });
+  } catch (error) {
+    next(new AppError(`Inexpected failure modifying user -> ${error}`));
+  }
+};
+
+export {
+  login,
+  createUser,
+  deleteSelectedUser,
+  deleteOwnself,
+  getUsers,
+  modifyUser,
+};
