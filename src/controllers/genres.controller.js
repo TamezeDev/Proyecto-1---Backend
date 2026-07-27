@@ -59,4 +59,18 @@ const deleteGenre = async (req, res, next) => {
   }
 };
 
-export { insertGenre, deleteGenre };
+const getGenres = async (req, res, next) => {
+  try {
+    const genres = await Genre.find();
+    if (genres.length === 0)
+      return next(
+        new NotFoundError("There isn't any genre in the database yet"),
+      );
+
+    res.status(200).json({ genres });
+  } catch (error) {
+    next(new AppError(`Inexpected error deleting genre -> ${error}`));
+  }
+};
+
+export { insertGenre, deleteGenre, getGenres };
