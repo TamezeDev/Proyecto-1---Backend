@@ -58,7 +58,7 @@ const deleteGenre = async (req, res, next) => {
     next(new AppError(`Inexpected error deleting genre -> ${error}`));
   }
 };
-
+/* Get all genres */
 const getGenres = async (req, res, next) => {
   try {
     const genres = await Genre.find();
@@ -72,5 +72,39 @@ const getGenres = async (req, res, next) => {
     next(new AppError(`Inexpected error deleting genre -> ${error}`));
   }
 };
+/* Modify some genre */
+const modifyGenre = async (req, res, next) => {
+  try {
+    const hasBody = req.body && Object.keys(req.body).length > 0;
 
-export { insertGenre, deleteGenre, getGenres };
+    if (!hasBody && !req.file) {
+      return next(new ValidationError("You must send data to change it"));
+    }
+
+    const genre = await Genre.findOne({ _id: req.params.id });
+    if (!genre)
+      return next(
+        new NotFoundError("This genre hasn't been found in the database"),
+      );
+
+    const updatedData = { ...req.body };
+
+    const updatedGenre = await Genre.findByIdAndUpdate(genre._id, updatedData, {
+      returnDocument: "after",
+      runValidators: true,
+    });
+
+    if (!updatedGenre)
+      return next(
+        new NotFoundError("This genre hasn't been found in the database"),
+      );
+
+    res
+      .status(200)
+      .json({ message: "Genre modified succesfully", updatedGenre });
+  } catch (error) {
+    next(new AppError(`Inexpected failure modifying user -> ${error}`));
+  }
+};
+
+export { insertGenre, deleteGenre, getGenres, modifyGenre };
