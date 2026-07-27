@@ -1,5 +1,5 @@
 import Genre from "./src/models/genre.model.js";
-import Song from "./src/models/song.model.js"
+import Song from "./src/models/song.model.js";
 import Album from "./src/models/album.model.js";
 import User from "./src/models/user.model.js";
 
@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 
 import genreRoutes from "./src/routes/genres.routes.js";
 import userRoutes from "./src/routes/users.routes.js";
+import songRoutes from "./src/routes/songs.routes.js";
 
 import { connectToDb } from "./config/database.config.js";
 import {
@@ -27,6 +28,7 @@ const initBackend = async () => {
   /* ROUTES */
   api.use("/api/v1/genre", genreRoutes);
   api.use("/api/v1/user", userRoutes);
+  api.use("/api/v1/song", songRoutes);
   /* MIDDLEWARES */
   api.use(notFoundError);
   api.use(unexpectedError);

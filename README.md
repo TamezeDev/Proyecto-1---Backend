@@ -45,9 +45,10 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 headers
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjYxMmQxMWE1OWI5OGQyY2IzOTNhNSIsImlhdCI6MTc4NTA3NDU4NywiZXhwIjoxNzg1MTYwOTg3fQ.7ZyA18LgB-JVCfvNXCcrejCcfKP3BvmCeNp6oRSSpPs
 ```
+<br>
 
 ### *Géneros:*
-  Solo un administrador puede encargarse de realizar operaciones referentes a Create-Update-Delete en los generos
+  Solo un administrador puede encargarse de realizar operaciones referentes a Create-Read-Update-Delete en los géneros
 
 1. Añadir un género: 
 
@@ -59,6 +60,32 @@ body
     "name": "Punk" 
 }
 ```
+<br>
+
+2. Eliminar un género: 
+
+    Envío mediante DELETE a http://localhost:2000/api/v1/genre/
+
+<br>
+
+3. Mostrar todos géneros: 
+
+    Envío mediante GET a http://localhost:2000/api/v1/genre/
+
+<br>
+
+4. Añadir un género: 
+
+    Envío mediante PUT a http://localhost:2000/api/v1/genre/6a6612d11a59b98d2cb39391
+
+```javascript
+body
+{
+    "name": "Bachata" 
+}
+```
+- El id debe corresponder al id del género a modificar
+<br>
 <br>
 
 ### *Usuarios:*
@@ -137,6 +164,25 @@ FormData
 
 
 ---
+### *Canciones:*
+ Solo un administrador puede encargarse de realizar operaciones referentes a Create-Update-Delete en los géneros.
+
+Un usuario puede leer canciones.
+
+1. Insertar canción nueva: 
+
+    Envío mediante POST a  http://localhost:2000/api/v1/song/create 
+
+```javascript
+body
+{
+  "title": "Bohemian Rhapsody",
+  "artists": "Queen",
+  "genre": "Pop",
+  "rating": 10,
+  "durationSeconds": 354
+}
+```
 
 ### Detalles
 - El usuario administrador por defecto para las pruebas es:
