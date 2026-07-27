@@ -8,6 +8,7 @@ import {
 } from "../../shared/errors/app.error.js";
 import { withoutBody } from "../../utils/validations.js";
 import { generateToken } from "../../utils/token.js";
+import { populate } from "dotenv";
 
 /* Check user credential returning jwt with userId */
 const login = async (req, res, next) => {
@@ -52,7 +53,7 @@ const createUser = async (req, res, next) => {
     const user = await User.create(req.body);
     res.status(201).json(user);
   } catch (error) {
-    next(AppError(`Inexpected failure creating user -> ${error}`));
+    next(new AppError(`Inexpected failure creating user -> ${error}`));
   }
 };
 /* Delete user delected account */
@@ -70,7 +71,7 @@ const deleteSelectedUser = async (req, res, next) => {
       .status(200)
       .json({ message: "User deleted succesfully", user: userdeleted });
   } catch (error) {
-    next(AppError(`Inexpected failure deleting user -> ${error}`));
+    next(new AppError(`Inexpected failure deleting user -> ${error}`));
   }
 };
 /* Delete user delected account */
@@ -83,7 +84,45 @@ const deleteOwnself = async (req, res, next) => {
       .status(200)
       .json({ message: "User deleted succesfully", user: userdeleted });
   } catch (error) {
-    next(AppError(`Inexpected failure deleting user -> ${error}`));
+    next(new AppError(`Inexpected failure deleting user -> ${error}`));
   }
 };
-export { login, createUser, deleteSelectedUser, deleteOwnself };
+/* Get all complete list users */
+const getUsers = async (req, res, next) => {
+  try {
+    const users = await User.find()
+      .populate({
+        path: "favouriteAlbums",
+        populate: [
+          {
+            path: "genre",
+            model: "Genre",
+          },
+          {
+            path: "tracklist",
+            model: "Song",
+            populate: {
+              path: "genre",
+              model: "Genre",
+            },
+          },
+        ],
+      })
+      .populate({
+        path: "favouriteSongs",
+        populate: [
+          {
+            path: "genre",
+            model: "Genre",
+          },
+        ],
+      });
+    if (users.length === 0)
+      return next(new NotFoundError("La lista de usuarios está vacía"));
+    res.status(200).json(users);
+  } catch (error) {
+    next(new AppError(`Inexpected failure showing user list -> ${error}`));
+  }
+};
+
+export { login, createUser, deleteSelectedUser, deleteOwnself, getUsers };

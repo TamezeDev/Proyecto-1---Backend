@@ -1,3 +1,8 @@
+import Genre from "./src/models/genre.model.js";
+import Song from "./src/models/song.model.js"
+import Album from "./src/models/album.model.js";
+import User from "./src/models/user.model.js";
+
 import express from "express";
 import dotenv from "dotenv";
 

@@ -102,6 +102,13 @@ body
 
     Envío mediante DELETE a  http://localhost:2000/api/v1/user/myself
 
+
+4. Mostrar todos los usuarios: 
+
+    Envío mediante GET a  http://localhost:2000/api/v1/user/ 
+
+   - Se mostrarán los datos completos referenciados a otras colecciones también
+
 ---
 
 ### Detalles
