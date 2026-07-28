@@ -88,6 +88,8 @@ body
 <br>
 <br>
 
+---
+
 ### *Usuarios:*
 -  Un usuario puede registrarse y eliminar su cuenta. Solo un admin puede eliminar cualquier cuenta
 -  Los usuarios pueden añadir, modificar o eliminar fotos de perfil
@@ -185,12 +187,21 @@ body
 
 <br>
 
-
-2. Mostrar todas las canciones: 
+2. Obtener todas las canciones: 
 
     Envío mediante GET a  http://localhost:2000/api/v1/song/
 
+    <br>
 
+3. Obtener una canción iduvidual.: 
+
+    Envío mediante GET a  http://localhost:2000/api/v1/song/6a6612d11a59b98d2cb3939c
+
+   - El id debe corresponder al id de la canción que se quiere mostar
+
+<br>
+
+---
 ### Detalles
 - El usuario administrador por defecto para las pruebas es:
   >    email: "lucia@test.com,  password: "lucia123"

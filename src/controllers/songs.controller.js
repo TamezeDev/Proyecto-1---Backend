@@ -46,19 +46,31 @@ const getSongs = async (req, res, next) => {
     const songs = await Song.find().populate("genre");
 
     if (songs.length === 0) {
-      return next(
-        new NotFoundError("There are no songs in the database yet"),
-      );
+      return next(new NotFoundError("There are no songs in the database yet"));
     }
 
     return res.status(200).json({ songs });
   } catch (error) {
     return next(
-      new AppError(
-        `Unexpected error getting songs -> ${error.message}`,
-      ),
+      new AppError(`Unexpected error getting songs -> ${error.message}`),
+    );
+  }
+};
+/* Get single song */
+const getSongById = async (req, res, next) => {
+  try {
+    const song = await Song.findById(req.params.id).populate("genre");
+
+    if (!song) {
+      return next(new NotFoundError("Song not found in database"));
+    }
+
+    return res.status(200).json({ song });
+  } catch (error) {
+    return next(
+      new AppError(`Unexpected error getting song -> ${error.message}`),
     );
   }
 };
 
-export { insertSong, getSongs };
+export { insertSong, getSongs, getSongById };
