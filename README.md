@@ -162,7 +162,6 @@ FormData
 
 <br>
 
-
 ---
 ### *Canciones:*
  Solo un administrador puede encargarse de realizar operaciones referentes a Create-Update-Delete en los géneros.
@@ -183,6 +182,14 @@ body
   "durationSeconds": 354
 }
 ```
+
+<br>
+
+
+2. Mostrar todas las canciones: 
+
+    Envío mediante GET a  http://localhost:2000/api/v1/song/
+
 
 ### Detalles
 - El usuario administrador por defecto para las pruebas es:

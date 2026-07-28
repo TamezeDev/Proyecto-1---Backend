@@ -40,5 +40,25 @@ const insertSong = async (req, res, next) => {
     );
   }
 };
+/* Gey all songs*/
+const getSongs = async (req, res, next) => {
+  try {
+    const songs = await Song.find().populate("genre");
 
-export { insertSong };
+    if (songs.length === 0) {
+      return next(
+        new NotFoundError("There are no songs in the database yet"),
+      );
+    }
+
+    return res.status(200).json({ songs });
+  } catch (error) {
+    return next(
+      new AppError(
+        `Unexpected error getting songs -> ${error.message}`,
+      ),
+    );
+  }
+};
+
+export { insertSong, getSongs };

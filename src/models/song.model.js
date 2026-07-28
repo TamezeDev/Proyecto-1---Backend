@@ -12,6 +12,7 @@ const songSchema = new Schema(
       type: Number,
       min: 10,
       max: 1000,
+      required: true,
     },
   },
   {
