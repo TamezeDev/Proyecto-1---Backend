@@ -216,7 +216,15 @@ body
 
 <br>
 
+5. Eliminar una canción: 
+
+    Envío mediante DELETE a  http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
+   - El id debe corresponder al id de la canción que se quiere mostar
+
+<br>
+
 ---
+
 ### Detalles
 - El usuario administrador por defecto para las pruebas es:
   >    email: "lucia@test.com,  password: "lucia123"

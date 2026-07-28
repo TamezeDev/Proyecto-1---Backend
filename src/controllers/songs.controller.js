@@ -108,5 +108,24 @@ const modifySong = async (req, res, next) => {
     );
   }
 };
+/* Delete song by id*/
+const deleteSong = async (req, res, next) => {
+  try {
+    const deleted = await Song.findByIdAndDelete(req.params.id);
 
-export { insertSong, getSongs, getSongById, modifySong };
+    if (!deleted) {
+      return next(new NotFoundError("Song not found in database"));
+    }
+
+    return res.status(200).json({
+      message: "Song deleted successfully",
+      deleted,
+    });
+  } catch (error) {
+    return next(
+      new AppError(`Unexpected error deleting song -> ${error.message}`),
+    );
+  }
+};
+
+export { insertSong, getSongs, getSongById, modifySong, deleteSong };
