@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import genreRoutes from "./src/routes/genres.routes.js";
 import userRoutes from "./src/routes/users.routes.js";
 import songRoutes from "./src/routes/songs.routes.js";
+import albumRoutes from "./src/routes/albums.routes.js";
 
 import { connectToDb } from "./config/database.config.js";
 import {
@@ -29,6 +30,7 @@ const initBackend = async () => {
   api.use("/api/v1/genre", genreRoutes);
   api.use("/api/v1/user", userRoutes);
   api.use("/api/v1/song", songRoutes);
+  api.use("/api/v1/album", albumRoutes);
   /* MIDDLEWARES */
   api.use(notFoundError);
   api.use(unexpectedError);

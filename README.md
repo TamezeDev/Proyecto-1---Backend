@@ -225,6 +225,33 @@ body
 
 ---
 
+### *Álbumes:*
+ Solo un administrador puede encargarse de realizar operaciones referentes a Create-Update-Delete en los Álbumes.
+
+Un usuario puede leer álbumes.
+
+1. Insertar álbum nueva: 
+
+    Envío mediante POST a  http://localhost:2000/api/v1/album/create 
+
+```javascript
+body
+{
+  "title": "Nuevo álbum",
+  "rating": 9,
+  "genre": "Rock",
+  "tracklist": [
+    "Levels",
+    "Levitating"
+  ]
+}
+```
+- Se enviará el nombre del género y el nombre de las canciones de dicho ábum. En caso de no encontrarlos en la base de datos le mostrará aviso de qué canciones no serán insertadas 
+
+<br>
+
+---
+
 ### Detalles
 - El usuario administrador por defecto para las pruebas es:
   >    email: "lucia@test.com,  password: "lucia123"
