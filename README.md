@@ -195,8 +195,23 @@ body
 
 3. Obtener una canción iduvidual.: 
 
-    Envío mediante GET a  http://localhost:2000/api/v1/song/6a6612d11a59b98d2cb3939c
+    Envío mediante GET a  http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
 
+   - El id debe corresponder al id de la canción que se quiere mostar
+
+<br>
+
+4. ModifiScar datos de una canción: 
+
+    Envío mediante PUT a  http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
+
+```javascript
+body
+{
+  "title": "Bohemian Rhapsody - Remastered",
+  "rating": 9
+}
+```
    - El id debe corresponder al id de la canción que se quiere mostar
 
 <br>
@@ -205,4 +220,5 @@ body
 ### Detalles
 - El usuario administrador por defecto para las pruebas es:
   >    email: "lucia@test.com,  password: "lucia123"
+- Todos los usuarios que se registren serán por defecto "user" como rol asignado.
  - Como excepción de entrega académica se deja fuera de **gitignore** el fichero **env** con las variables de enntorno usadas en el proyecto.

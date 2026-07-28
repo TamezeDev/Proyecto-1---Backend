@@ -1,14 +1,12 @@
 import Song from "../models/song.model.js";
 import Genre from "../models/genre.model.js";
+import { withoutBody } from "../../utils/validations.js";
 import {
   InsertError,
   ValidationError,
   AppError,
   NotFoundError,
 } from "../../shared/errors/app.error.js";
-
-import { withoutBody } from "../../utils/validations.js";
-
 /* Create a new song */
 const insertSong = async (req, res, next) => {
   try {
@@ -72,5 +70,43 @@ const getSongById = async (req, res, next) => {
     );
   }
 };
+/* Modify song */
+const modifySong = async (req, res, next) => {
+  try {
+    if (withoutBody(req.body, next)) return;
 
-export { insertSong, getSongs, getSongById };
+    const song = await Song.findById(req.params.id);
+
+    if (!song) {
+      return next(new NotFoundError("Song not found in database"));
+    }
+
+    const updatedData = { ...req.body };
+
+    if (updatedData.genre) {
+      const genreExists = await Genre.findOne({ name: updatedData.genre });
+
+      if (!genreExists) {
+        return next(new ValidationError("Selected genre does not exist"));
+      }
+
+      updatedData.genre = req.body.genre;
+    }
+
+    const updatedSong = await Song.findByIdAndUpdate(song._id, updatedData, {
+      returnDocument: "after",
+      runValidators: true,
+    }).populate("genre");
+
+    return res.status(200).json({
+      message: "Song modified successfully",
+      updatedSong,
+    });
+  } catch (error) {
+    return next(
+      new AppError(`Unexpected failure modifying song -> ${error.message}`),
+    );
+  }
+};
+
+export { insertSong, getSongs, getSongById, modifySong };
