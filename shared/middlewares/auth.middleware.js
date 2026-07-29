@@ -26,4 +26,11 @@ const isAuth = (...allowedRoles) => {
   };
 };
 
-export default isAuth;
+const selectRole = (roleSelected) => {
+  return (req, res, next) => {
+    req.role = roleSelected;
+    next();
+  };
+};
+
+export { isAuth, selectRole };

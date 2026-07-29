@@ -6,7 +6,7 @@ import {
   modifySong,
   deleteSong,
 } from "../controllers/songs.controller.js";
-import isAuth from "../../shared/middlewares/auth.middleware.js";
+import { isAuth } from "../../shared/middlewares/auth.middleware.js";
 
 const router = Router();
 

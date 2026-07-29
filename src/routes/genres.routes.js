@@ -5,7 +5,7 @@ import {
   getGenres,
   modifyGenre,
 } from "../controllers/genres.controller.js";
-import isAuth from "../../shared/middlewares/auth.middleware.js";
+import { isAuth } from "../../shared/middlewares/auth.middleware.js";
 
 const router = Router();
 

@@ -8,8 +8,9 @@ import {
   modifyUser,
   addSongsToFavourite,
   addAlbumsToFavourite,
+  changeRole,
 } from "../controllers/users.controller.js";
-import isAuth from "../../shared/middlewares/auth.middleware.js";
+import { isAuth, selectRole } from "../../shared/middlewares/auth.middleware.js";
 import upload from "../../shared/middlewares/files.middleware.js";
 
 const router = Router();
@@ -21,6 +22,8 @@ router.delete("/", isAuth("admin"), deleteSelectedUser);
 router.delete("/myself", isAuth(), deleteOwnself);
 
 router.get("/", isAuth("admin"), getUsers);
+router.get("/setAdmin/:id", isAuth("admin"), selectRole("admin"), changeRole);
+router.get("/setUser/:id", isAuth("admin"), selectRole("user"), changeRole);
 router.put("/", isAuth(), upload.single("image"), modifyUser);
 router.put("/addFavouriteSongs", isAuth(), addSongsToFavourite);
 router.put("/addFavouriteAlbums", isAuth(), addAlbumsToFavourite);

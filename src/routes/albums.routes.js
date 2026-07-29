@@ -6,7 +6,7 @@ import {
   modifyAlbum,
   deleteAlbum,
 } from "../controllers/albums.controller.js";
-import isAuth from "../../shared/middlewares/auth.middleware.js";
+import { isAuth } from "../../shared/middlewares/auth.middleware.js";
 
 const router = Router();
 

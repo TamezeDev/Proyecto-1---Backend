@@ -253,6 +253,26 @@ body
 
 - Nota: Recordar enviar siempre el jwt en authorization para validar el usuario y conseguir conocer su id.
 
+### 8. Modificar el rol para hacer "admin" a un usuario
+
+Envío mediante `GET` a:
+
+```text
+http://localhost:2000/api/v1/user/setAdmin/6a6a5ffa008e9f325ddb5f0c
+```
+
+- Nota: Recordar enviar el jwt en authorization para validar el usuario y autorizar la operación siendo un administrador
+
+### 9. Modificar el rol para hacer "user" a un usuario
+
+Envío mediante `GET` a:
+
+```text
+http://localhost:2000/api/v1/user/setUser/6a6a5ffa008e9f325ddb5f0c
+```
+
+- Nota: Recordar enviar el jwt en authorization para validar el usuario y autorizar la operación siendo un administrador
+
 ---
 
 ## Canciones

@@ -284,6 +284,25 @@ const addAlbumsToFavourite = async (req, res, next) => {
     );
   }
 };
+const changeRole = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return next(new NotFoundError("User doesn't found in database"));
+
+    const modified = await User.findByIdAndUpdate(
+      user._id,
+      { role: req.role },
+      { returnDocument: "after", runValidators: true },
+    );
+
+    res.status(200).json({
+      message: "Role modified succesfully",
+      currentRole: modified.role,
+    });
+  } catch (error) {
+    next(new AppError(`Inexpected failure modifying user role -> ${error}`));
+  }
+};
 /* ==============
   PRIVATE METHODS
 =================*/
@@ -312,4 +331,5 @@ export {
   modifyUser,
   addSongsToFavourite,
   addAlbumsToFavourite,
+  changeRole,
 };
