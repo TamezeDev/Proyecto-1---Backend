@@ -30,11 +30,16 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 ---
 
 ## Instrucciones
-1. Abrir una shell y situarse en la raíz del proyecto
-2. Ejecutar el siguiente script para poblar la base de datos
+1. Abrir una shell y clonar el repositorio del proyecto.
+> git clone https://github.com/TamezeDev/Proyecto-1---Backend.git
+2. Situarse en el directorio raíz.
+> cd Proyecto-1---Backend
+3. Copiar o crear el archivo .env en la raiz con el contenido del documento de claves aportado por email.
+4. Ejecutar el siguiente script para poblar la base de datos
 > npm run seeds
-3. Para iniciar el servidor lanzar desde la consola el siguiente script:
+5. Para iniciar el servidor lanzar desde la consola el siguiente script:
 > npm run start
+6. Desde Postman, Thunder clientm, insomnia o similar hacer las peticiones a los endpoints para probar su funcionamiento
 
 ---
 
@@ -161,6 +166,22 @@ FormData
 }
 ```
 - Nota: Recordar enviar siempre el jwt en authorization para validar el usuario
+
+<br>
+
+1. Añadir canciones a la lista de favoritos de usuario:
+
+    Envío mediante PUT a  http://localhost:2000/api/v1/user/addFavouriteSongs
+```javascript
+body 
+{
+  "favouriteSongs": [
+    "Todo de ti",
+    "Despechá"
+  ]
+}
+```
+- Nota: Recordar enviar siempre el jwt en authorization para validar el usuario y conseguir conocer su id
 
 <br>
 
@@ -301,4 +322,5 @@ body
 - El usuario administrador por defecto para las pruebas es:
   >    email: "lucia@test.com,  password: "lucia123"
 - Todos los usuarios que se registren serán por defecto "user" como rol asignado.
- - Como excepción de entrega académica se deja fuera de **gitignore** el fichero **env** con las variables de enntorno usadas en el proyecto.
+ - ~~Como excepción de entrega académica se deja fuera de **gitignore** el fichero **env** con las variables de enntorno usadas en el proyecto~~
+ - Se ha preferido enviar las variables de entorno por correo. Aunque es de proposito escolar no es necesario exponer los servicios mas que para el profesorado 

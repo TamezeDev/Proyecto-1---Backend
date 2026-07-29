@@ -27,7 +27,7 @@ const insertAlbum = async (req, res, next) => {
         new ValidationError("The body sent hasn't been created successfully"),
       );
     }
-    const validSongs = await getSongsIdByName(req.body.tracklist, next);
+    const validSongs = await getSongsIdByName(req.body.tracklist);
     if (validSongs.length === 0)
       return next(
         new ValidationError("Neiter of the songs has been found in database"),
@@ -135,7 +135,7 @@ const modifyAlbum = async (req, res, next) => {
         );
       }
 
-      const validSongs = await getSongsIdByName(updatedData.tracklist, next);
+      const validSongs = await getSongsIdByName(updatedData.tracklist);
       if (validSongs.length === 0)
         return next(
           new ValidationError("Neiter of the songs has been found in database"),
@@ -190,7 +190,7 @@ const deleteAlbum = async (req, res, next) => {
 };
 
 /* ==============
-  PRIVATE METHODS
+  SHARED METHODS
 =================*/
 const getSongsIdByName = async (tracklist) => {
   const validSongs = [];
@@ -207,4 +207,4 @@ const getSongsIdByName = async (tracklist) => {
   return validSongs;
 };
 
-export { insertAlbum, getAlbums, getAlbumById, modifyAlbum, deleteAlbum };
+export { insertAlbum, getAlbums, getAlbumById, modifyAlbum, deleteAlbum, getSongsIdByName };

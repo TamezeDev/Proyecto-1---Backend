@@ -6,6 +6,7 @@ import {
   ForbiddenError,
   NotFoundError,
 } from "../../shared/errors/app.error.js";
+import { getSongsIdByName } from "../controllers/albums.controller.js";
 import { withoutBody } from "../../utils/validations.js";
 import { generateToken } from "../../utils/token.js";
 import { deleteImgCloudinary } from "../../utils/cloudinary.util.js";
@@ -171,6 +172,41 @@ const modifyUser = async (req, res, next) => {
   }
 };
 
+const addSongsToFavourite = async (req, res, next) => {
+  try {
+    if (withoutBody(req.body, next)) return;
+
+    const user = await User.findById(req.userId);
+    if (!user) return next(new NotFoundError("User doesn't found in database"));
+
+    if (!req.body.favouriteSongs)
+      return next(
+        new ValidationError("The body sent hasn't been created successfully"),
+      );
+
+    const newSongsIds = await getSongsIdByName(req.body.favouriteSongs);
+    if (newSongsIds.length === 0)
+      return next(
+        new ValidationError("Neiter of the songs has been found in database"),
+      );
+
+    const newFavouriteSongList = [...user.favouriteSongs, ...newSongsIds];
+    const updated = await User.findOneAndUpdate(
+      user._id,
+      { favouriteSongs: newFavouriteSongList },
+      { returnDocument: "after", runValidators: true },
+    );
+
+    res.status(200).json(updated);
+  } catch (error) {
+    next(
+      new AppError(
+        `Inexpected failure adding songs to user favourite list -> ${error}`,
+      ),
+    );
+  }
+};
+
 export {
   login,
   createUser,
@@ -178,4 +214,5 @@ export {
   deleteOwnself,
   getUsers,
   modifyUser,
+  addSongsToFavourite,
 };

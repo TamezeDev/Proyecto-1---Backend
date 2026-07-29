@@ -6,6 +6,7 @@ import {
   deleteOwnself,
   getUsers,
   modifyUser,
+  addSongsToFavourite,
 } from "../controllers/users.controller.js";
 import isAuth from "../../shared/middlewares/auth.middleware.js";
 import upload from "../../shared/middlewares/files.middleware.js";
@@ -20,5 +21,6 @@ router.delete("/myself", isAuth(), deleteOwnself);
 
 router.get("/", isAuth("admin"), getUsers);
 router.put("/", isAuth(), upload.single("image"), modifyUser);
+router.put("/addFavouriteSongs", isAuth(), addSongsToFavourite);
 
 export default router;
