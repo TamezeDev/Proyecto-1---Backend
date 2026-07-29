@@ -1,13 +1,12 @@
 import Album from "../models/album.model.js";
 import Genre from "../models/genre.model.js";
-import Song from "../models/song.model.js";
 import {
   InsertError,
   ValidationError,
   AppError,
   NotFoundError,
 } from "../../shared/errors/app.error.js";
-
+import { getSongsIdByName } from "../controllers/songs.controller.js";
 import { withoutBody } from "../../utils/validations.js";
 
 /* Create new album */
@@ -192,19 +191,29 @@ const deleteAlbum = async (req, res, next) => {
 /* ==============
   SHARED METHODS
 =================*/
-const getSongsIdByName = async (tracklist) => {
-  const validSongs = [];
-  if (tracklist.length > 0) {
-    for (const songName of tracklist) {
-      const songFound = await Song.findOne({ title: songName });
-      if (!songFound)
-        throw new ValidationError(`Song ${songName} not found in database`);
-      else validSongs.push(songFound._id);
+const getAlbumsIdByName = async (albumlist) => {
+  const validAlbums = [];
+  if (albumlist.length > 0) {
+    for (const albumName of albumlist) {
+      const albumFound = await Album.findOne({ title: albumName });
+      if (!albumFound)
+        throw new ValidationError(`Album ${albumName} not found in database`);
+      else validAlbums.push(albumFound._id);
     }
   } else {
-    throw new ValidationError("You must send tracks included in this album");
+    throw new ValidationError(
+      "You must send albums names that you want to add",
+    );
   }
-  return validSongs;
+  return validAlbums;
 };
 
-export { insertAlbum, getAlbums, getAlbumById, modifyAlbum, deleteAlbum, getSongsIdByName };
+export {
+  insertAlbum,
+  getAlbums,
+  getAlbumById,
+  modifyAlbum,
+  deleteAlbum,
+  getSongsIdByName,
+  getAlbumsIdByName
+};

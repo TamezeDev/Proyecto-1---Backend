@@ -128,4 +128,29 @@ const deleteSong = async (req, res, next) => {
   }
 };
 
-export { insertSong, getSongs, getSongById, modifySong, deleteSong };
+/* ==============
+  SHARED METHODS
+=================*/
+const getSongsIdByName = async (tracklist) => {
+  const validSongs = [];
+  if (tracklist.length > 0) {
+    for (const songName of tracklist) {
+      const songFound = await Song.findOne({ title: songName });
+      if (!songFound)
+        throw new ValidationError(`Song ${songName} not found in database`);
+      else validSongs.push(songFound._id);
+    }
+  } else {
+    throw new ValidationError("You must send tracks included in this album");
+  }
+  return validSongs;
+};
+
+export {
+  insertSong,
+  getSongs,
+  getSongById,
+  modifySong,
+  deleteSong,
+  getSongsIdByName,
+};

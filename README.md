@@ -1,119 +1,151 @@
-# **Proyecto 1 - Backend**
+# Proyecto 1 - Backend
+
 Creación de un backend con node conectado a mongo atlas y almacenando imagenes en cloudinary.
 
----
-
 ## Objetivo
+
 - Iniciar un servidor en el lado backend al que se accede mediante una dirección localhost.
 - El servidor conectará con una base de datos externa al equipo, en nuestro caso hemos usado Mongo Atlas.
 - El servidor conectará con un storage de almacenamiento para guardar las imágenes, generando una url pública.
 - Mediante control basado en roles, se limitará el acceso a distintas funcionalidades, garantizando la seguridad de acceso a los endpoints mediante los middlewares dedicados a ello.
 - Los datos se referenciarán mediante el id del Objeto.
-- Se hará uso de tokens de sesión para controlar el acceso a los usuarios
----
+- Se hará uso de tokens de sesión para controlar el acceso a los usuarios.
 
 ## Dependencias usadas
--  Nodemon (Para el desarrollo)
--  Mongoose (Base de datos)
--  Express (Enrutador y ejecución del server)
--  Dotenv (Habilita acceso a las variables de entorno del file .env)
--  Bcrypt (Codifica o compara contraseñas)
--  JsonWebToken (JWT para comprobar sesiones activas, roles, ...)
--  Multer (acceso a ficheros enviados)
--  Storage Cloudinary (Guardado de imagenes remoto)
-  
---- 
+
+- Nodemon (Para el desarrollo)
+- Mongoose (Base de datos)
+- Express (Enrutador y ejecución del server)
+- Dotenv (Habilita acceso a las variables de entorno del file `.env`)
+- Bcrypt (Codifica o compara contraseñas)
+- JsonWebToken (JWT para comprobar sesiones activas, roles, ...)
+- Multer (acceso a ficheros enviados)
+- Storage Cloudinary (Guardado de imagenes remoto)
 
 ## Configuración
+
 - Se establece el dns del servicio en *1.1.1.1* (Cloudflare) y *8.8.8.8* (Google) para evitar conflictos de conexión con la base de datos en Mongo Atlas.
 
----
-
 ## Instrucciones
-1. Abrir una shell y clonar el repositorio del proyecto.
-> git clone https://github.com/TamezeDev/Proyecto-1---Backend.git
-2. Situarse en el directorio raíz.
-> cd Proyecto-1---Backend
-3. Copiar o crear el archivo .env en la raiz con el contenido del documento de claves aportado por email.
-4. Ejecutar el siguiente script para poblar la base de datos
-> npm run seeds
-5. Para iniciar el servidor lanzar desde la consola el siguiente script:
-> npm run start
-6. Desde Postman, Thunder clientm, insomnia o similar hacer las peticiones a los endpoints para probar su funcionamiento
 
----
+1. Abrir una shell y clonar el repositorio del proyecto.
+
+   ```bash
+   git clone https://github.com/TamezeDev/Proyecto-1---Backend.git
+   ```
+
+2. Situarse en el directorio raíz.
+
+   ```bash
+   cd Proyecto-1---Backend
+   ```
+
+3. Copiar o crear el archivo `.env` en la raiz con el contenido del documento de claves aportado por email.
+
+4. Ejecutar el siguiente script para poblar la base de datos.
+
+   ```bash
+   npm run seeds
+   ```
+
+5. Para iniciar el servidor lanzar desde la consola el siguiente script:
+
+   ```bash
+   npm run start
+   ```
+
+6. Desde Postman, Thunder clientm, insomnia o similar hacer las peticiones a los endpoints para probar su funcionamiento.
 
 ## Acceso a endpoints
+
 - Para el acceso general de todos los endpoint, excepto para efectuar el login y registro de un usuario, es necesario enviar el token de sesión mediante headers.
 
 ```javascript
 headers
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNjYxMmQxMWE1OWI5OGQyY2IzOTNhNSIsImlhdCI6MTc4NTA3NDU4NywiZXhwIjoxNzg1MTYwOTg3fQ.7ZyA18LgB-JVCfvNXCcrejCcfKP3BvmCeNp6oRSSpPs
 ```
-<br>
 
-### *Géneros:*
-  Solo un administrador puede encargarse de realizar operaciones referentes a Create-Read-Update-Delete en los géneros
+## Géneros
 
-1. Añadir un género: 
+Solo un administrador puede encargarse de realizar operaciones referentes a Create-Read-Update-Delete en los géneros.
 
-    Envío mediante POST a http://localhost:2000/api/v1/genre/create
+### 1. Añadir un género
+
+Envío mediante `POST` a:
+
+```text
+http://localhost:2000/api/v1/genre/create
+```
 
 ```javascript
 body
 {
-    "name": "Punk" 
+  "name": "Punk"
 }
 ```
-<br>
 
-2. Eliminar un género: 
+### 2. Eliminar un género
 
-    Envío mediante DELETE a http://localhost:2000/api/v1/genre/
+Envío mediante `DELETE` a:
 
-<br>
+```text
+http://localhost:2000/api/v1/genre/
+```
 
-3. Mostrar todos géneros: 
+### 3. Mostrar todos géneros
 
-    Envío mediante GET a http://localhost:2000/api/v1/genre/
+Envío mediante `GET` a:
 
-<br>
+```text
+http://localhost:2000/api/v1/genre/
+```
 
-4. Añadir un género: 
+### 4. Añadir un género
 
-    Envío mediante PUT a http://localhost:2000/api/v1/genre/6a6612d11a59b98d2cb39391
+Envío mediante `PUT` a:
+
+```text
+http://localhost:2000/api/v1/genre/6a6612d11a59b98d2cb39391
+```
 
 ```javascript
 body
 {
-    "name": "Bachata" 
+  "name": "Bachata"
 }
 ```
-- El id debe corresponder al id del género a modificar
-<br>
-<br>
 
----
+- El id debe corresponder al id del género a modificar.
 
-### *Usuarios:*
--  Un usuario puede registrarse y eliminar su cuenta. Solo un admin puede eliminar cualquier cuenta
--  Los usuarios pueden añadir, modificar o eliminar fotos de perfil
+## Usuarios
 
-1. Login de usuario: 
+- Un usuario puede registrarse y eliminar su cuenta. Solo un admin puede eliminar cualquier cuenta.
+- Los usuarios pueden añadir, modificar o eliminar fotos de perfil.
 
-    Envío mediante POST a  http://localhost:2000/api/v1/user/login 
+### 1. Login de usuario
+
+Envío mediante `POST` a:
+
+```text
+http://localhost:2000/api/v1/user/login
+```
+
 ```javascript
 body
 {
-    "email": "Paco@test.com",
-    "password": "Paco1234"
+  "email": "Paco@test.com",
+  "password": "Paco1234"
 }
 ```
-<br>
 
-2. Registro de usuario: 
+### 2. Registro de usuario
 
-    Envío mediante POST a  http://localhost:2000/api/v1/user/create 
+Envío mediante `POST` a:
+
+```text
+http://localhost:2000/api/v1/user/create
+```
+
 ```javascript
 body
 {
@@ -124,13 +156,17 @@ body
   "bornYear": 2002
 }
 ```
-<br>
 
-3. Borrado de usuario: 
- 
-  - Solo un usuario admin tiene habilitado este endpoint que borra a cualquier usuario seleccionado
+### 3. Borrado de usuario
 
-    Envío mediante DELETE a  http://localhost:2000/api/v1/user/ 
+- Solo un usuario admin tiene habilitado este endpoint que borra a cualquier usuario seleccionado.
+
+Envío mediante `DELETE` a:
+
+```text
+http://localhost:2000/api/v1/user/
+```
+
 ```javascript
 body
 {
@@ -138,26 +174,36 @@ body
 }
 ```
 
-  - Cualquier usurio eliminará su cuenta asociada al id del token enviado
+- Cualquier usurio eliminará su cuenta asociada al id del token enviado.
 
-    Envío mediante DELETE a  http://localhost:2000/api/v1/user/myself
+Envío mediante `DELETE` a:
 
-<br>
+```text
+http://localhost:2000/api/v1/user/myself
+```
 
-4. Mostrar todos los usuarios: 
+### 4. Mostrar todos los usuarios
 
-    Envío mediante GET a  http://localhost:2000/api/v1/user/ 
+Envío mediante `GET` a:
 
-   - Se mostrarán los datos completos referenciados a otras colecciones también
-  
-  <br>
+```text
+http://localhost:2000/api/v1/user/
+```
 
+- Se mostrarán los datos completos referenciados a otras colecciones también.
 
-5. Modificar  datos de usuario: (añadir imagen de perfil, modificar cuenta o datos personales...)
+### 5. Modificar datos de usuario
 
-    Envío mediante PUT a  http://localhost:2000/api/v1/user/ 
+Añadir imagen de perfil, modificar cuenta o datos personales.
+
+Envío mediante `PUT` a:
+
+```text
+http://localhost:2000/api/v1/user/
+```
+
 ```javascript
-FormData 
+FormData
 {
   "name": "Sara",
   "email": "Juan@test.com",
@@ -165,15 +211,19 @@ FormData
   "image": imagen seleccionada
 }
 ```
-- Nota: Recordar enviar siempre el jwt en authorization para validar el usuario
 
-<br>
+- Nota: Recordar enviar siempre el jwt en authorization para validar el usuario.
 
-1. Añadir canciones a la lista de favoritos de usuario:
+### 6. Añadir canciones a la lista de favoritos de usuario
 
-    Envío mediante PUT a  http://localhost:2000/api/v1/user/addFavouriteSongs
+Envío mediante `PUT` a:
+
+```text
+http://localhost:2000/api/v1/user/addFavouriteSongs
+```
+
 ```javascript
-body 
+body
 {
   "favouriteSongs": [
     "Todo de ti",
@@ -181,19 +231,43 @@ body
   ]
 }
 ```
-- Nota: Recordar enviar siempre el jwt en authorization para validar el usuario y conseguir conocer su id
 
-<br>
+- Nota: Recordar enviar siempre el jwt en authorization para validar el usuario y conseguir conocer su id.
+
+### 7. Añadir álbumes a la lista de favoritos de usuario
+
+Envío mediante `PUT` a:
+
+```text
+http://localhost:2000/api/v1/user/addFavouriteAlbums
+```
+
+```javascript
+body
+{
+  "favouriteAlbums": [
+    "Nunca el tiempo es perdido"
+  ]
+}
+```
+
+- Nota: Recordar enviar siempre el jwt en authorization para validar el usuario y conseguir conocer su id.
 
 ---
-### *Canciones:*
- Solo un administrador puede encargarse de realizar operaciones referentes a Create-Update-Delete en los géneros.
+
+## Canciones
+
+Solo un administrador puede encargarse de realizar operaciones referentes a Create-Update-Delete en los géneros.
 
 Un usuario puede leer canciones.
 
-1. Insertar canción nueva: 
+### 1. Insertar canción nueva
 
-    Envío mediante POST a  http://localhost:2000/api/v1/song/create 
+Envío mediante `POST` a:
+
+```text
+http://localhost:2000/api/v1/song/create
+```
 
 ```javascript
 body
@@ -206,25 +280,31 @@ body
 }
 ```
 
-<br>
+### 2. Obtener todas las canciones
 
-2. Obtener todas las canciones: 
+Envío mediante `GET` a:
 
-    Envío mediante GET a  http://localhost:2000/api/v1/song/
+```text
+http://localhost:2000/api/v1/song/
+```
 
-    <br>
+### 3. Obtener una canción iduvidual
 
-3. Obtener una canción iduvidual.: 
+Envío mediante `GET` a:
 
-    Envío mediante GET a  http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
+```text
+http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
+```
 
-   - El id debe corresponder al id de la canción que se quiere mostrar
+- El id debe corresponder al id de la canción que se quiere mostrar.
 
-<br>
+### 4. ModifiScar datos de una canción
 
-4. ModifiScar datos de una canción: 
+Envío mediante `PUT` a:
 
-    Envío mediante PUT a  http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
+```text
+http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
+```
 
 ```javascript
 body
@@ -233,27 +313,34 @@ body
   "rating": 9
 }
 ```
-   - El id debe corresponder al id de la canción que se quiere mostar
 
-<br>
+- El id debe corresponder al id de la canción que se quiere mostar.
 
-5. Eliminar una canción: 
+### 5. Eliminar una canción
 
-    Envío mediante DELETE a  http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
-   - El id debe corresponder al id de la canción que se quiere mostar
+Envío mediante `DELETE` a:
 
-<br>
+```text
+http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
+```
+
+- El id debe corresponder al id de la canción que se quiere mostar.
 
 ---
 
-### *Álbumes:*
- Solo un administrador puede encargarse de realizar operaciones referentes a Create-Update-Delete en los Álbumes.
+## Álbumes
+
+Solo un administrador puede encargarse de realizar operaciones referentes a Create-Update-Delete en los Álbumes.
 
 Un usuario puede leer álbumes.
 
-1. Insertar álbum nueva: 
+### 1. Insertar álbum nueva
 
-    Envío mediante POST a  http://localhost:2000/api/v1/album/create 
+Envío mediante `POST` a:
+
+```text
+http://localhost:2000/api/v1/album/create
+```
 
 ```javascript
 body
@@ -267,28 +354,34 @@ body
   ]
 }
 ```
-- Se enviará el nombre del género y el nombre de las canciones de dicho ábum. En caso de no encontrarlos en la base de datos le mostrará aviso de qué canciones no serán insertadas 
 
-<br>
+- Se enviará el nombre del género y el nombre de las canciones de dicho ábum. En caso de no encontrarlos en la base de datos le mostrará aviso de qué canciones no serán insertadas.
 
-2. Mostrar todos los álbumes: 
+### 2. Mostrar todos los álbumes
 
-    Envío mediante GET a  http://localhost:2000/api/v1/album/ 
+Envío mediante `GET` a:
 
-<br>
+```text
+http://localhost:2000/api/v1/album/
+```
 
-3. Obtener un álbum por su id: 
+### 3. Obtener un álbum por su id
 
-    Envío mediante GET a  http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2 
+Envío mediante `GET` a:
 
+```text
+http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2
+```
 
-  - El id debe corresponder al id del álbum que se quiere mostrar
+- El id debe corresponder al id del álbum que se quiere mostrar.
 
-<br>
+### 4. Modificar un álbum enviando su id
 
-4. Modificar un álbum enviando su id: 
+Envío mediante `PUT` a:
 
-    Envío mediante PUT a  http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2 
+```text
+http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2
+```
 
 ```javascript
 body
@@ -302,25 +395,30 @@ body
   ]
 }
 ```
-- Se enviará el nombre del género y el nombre de las canciones de dicho ábum. En caso de no encontrarlos en la base de datos le mostrará aviso de qué canciones no se encuentra cancelando la operación
 
-<br>
+- Se enviará el nombre del género y el nombre de las canciones de dicho ábum. En caso de no encontrarlos en la base de datos le mostrará aviso de qué canciones no se encuentra cancelando la operación.
 
-5. Eliminar un álbum por su id: 
+### 5. Eliminar un álbum por su id
 
-    Envío mediante DELETE a  http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2 
+Envío mediante `DELETE` a:
 
+```text
+http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2
+```
 
-  - El id debe corresponder al id del álbum que se quiere eliminar. Operación autorizada solo para admins
-
-<br>
+- El id debe corresponder al id del álbum que se quiere eliminar. Operación autorizada solo para admins.
 
 ---
----
 
-### Detalles
+## Detalles
+
 - El usuario administrador por defecto para las pruebas es:
-  >    email: "lucia@test.com,  password: "lucia123"
-- Todos los usuarios que se registren serán por defecto "user" como rol asignado.
- - ~~Como excepción de entrega académica se deja fuera de **gitignore** el fichero **env** con las variables de enntorno usadas en el proyecto~~
- - Se ha preferido enviar las variables de entorno por correo. Aunque es de proposito escolar no es necesario exponer los servicios mas que para el profesorado 
+
+  ```text
+  email: "lucia@test.com"
+  password: "lucia123"
+  ```
+
+- Todos los usuarios que se registren serán por defecto `"user"` como rol asignado.
+- ~~Como excepción de entrega académica se deja fuera de **gitignore** el fichero **env** con las variables de enntorno usadas en el proyecto~~
+- Se ha preferido enviar las variables de entorno por correo. Aunque es de proposito escolar no es necesario exponer los servicios mas que para el profesorado.
