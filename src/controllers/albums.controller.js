@@ -69,5 +69,33 @@ const insertAlbum = async (req, res, next) => {
     );
   }
 };
+/* GET ALL ALBUMS */
+const getAlbums = async (req, res, next) => {
+  try {
+    const albums = await Album.find()
+      .populate("genre")
+      .populate({
+        path: "tracklist",
+        populate: {
+          path: "genre",
+        },
+      });
 
-export { insertAlbum };
+    if (albums.length === 0) {
+      return next(
+        new NotFoundError("There are no albums in the database yet"),
+      );
+    }
+
+    return res.status(200).json({ albums });
+  } catch (error) {
+    return next(
+      new AppError(
+        `Unexpected error getting albums -> ${error.message}`,
+      ),
+    );
+  }
+};
+
+
+export { insertAlbum, getAlbums };
