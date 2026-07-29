@@ -197,7 +197,7 @@ body
 
     Envío mediante GET a  http://localhost:2000/api/v1/song/6a67bb84dd3ec8008e6b2316
 
-   - El id debe corresponder al id de la canción que se quiere mostar
+   - El id debe corresponder al id de la canción que se quiere mostrar
 
 <br>
 
@@ -249,6 +249,19 @@ body
 - Se enviará el nombre del género y el nombre de las canciones de dicho ábum. En caso de no encontrarlos en la base de datos le mostrará aviso de qué canciones no serán insertadas 
 
 <br>
+
+2. Mostrar todos los álbumes: 
+
+    Envío mediante GET a  http://localhost:2000/api/v1/album/ 
+
+<br>
+
+3. Obetener un álbum por su id: 
+
+    Envío mediante GET a  http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2 
+
+
+  - El id debe corresponder al id del álbum que se quiere mostrar
 
 ---
 

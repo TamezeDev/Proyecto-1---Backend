@@ -69,7 +69,7 @@ const insertAlbum = async (req, res, next) => {
     );
   }
 };
-/* GET ALL ALBUMS */
+/* Get all albums */
 const getAlbums = async (req, res, next) => {
   try {
     const albums = await Album.find()
@@ -82,20 +82,39 @@ const getAlbums = async (req, res, next) => {
       });
 
     if (albums.length === 0) {
-      return next(
-        new NotFoundError("There are no albums in the database yet"),
-      );
+      return next(new NotFoundError("There are no albums in the database yet"));
     }
 
     return res.status(200).json({ albums });
   } catch (error) {
     return next(
-      new AppError(
-        `Unexpected error getting albums -> ${error.message}`,
-      ),
+      new AppError(`Unexpected error getting albums -> ${error.message}`),
     );
   }
 };
 
+/* Get single album by id */
+const getAlbumById = async (req, res, next) => {
+  try {
+    const album = await Album.findById(req.params.id)
+      .populate("genre")
+      .populate({
+        path: "tracklist",
+        populate: {
+          path: "genre",
+        },
+      });
 
-export { insertAlbum, getAlbums };
+    if (!album) {
+      return next(new NotFoundError("Album not found in database"));
+    }
+
+    return res.status(200).json({ album });
+  } catch (error) {
+    return next(
+      new AppError(`Unexpected error getting album -> ${error.message}`),
+    );
+  }
+};
+
+export { insertAlbum, getAlbums, getAlbumById };
