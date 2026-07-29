@@ -198,7 +198,7 @@ const getAlbumsIdByName = async (albumlist) => {
       const albumFound = await Album.findOne({ title: albumName });
       if (!albumFound)
         throw new ValidationError(`Album ${albumName} not found in database`);
-      else validAlbums.push(albumFound._id);
+      else validAlbums.push(albumFound);
     }
   } else {
     throw new ValidationError(

@@ -138,7 +138,7 @@ const getSongsIdByName = async (tracklist) => {
       const songFound = await Song.findOne({ title: songName });
       if (!songFound)
         throw new ValidationError(`Song ${songName} not found in database`);
-      else validSongs.push(songFound._id);
+      else validSongs.push(songFound);
     }
   } else {
     throw new ValidationError("You must send tracks included in this album");

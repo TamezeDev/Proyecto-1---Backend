@@ -69,6 +69,8 @@ const deleteSelectedUser = async (req, res, next) => {
     const userdeleted = await User.findOneAndDelete({ email: req.body.email });
     if (!userdeleted)
       return next(new NotFoundError("Email sent doesn't found in database"));
+    res;
+    if (userdeleted.imgId) deleteImgCloudinary(userdeleted.imgId);
     res
       .status(200)
       .json({ message: "User deleted succesfully", user: userdeleted });
@@ -82,6 +84,8 @@ const deleteOwnself = async (req, res, next) => {
     const userdeleted = await User.findOneAndDelete({ _id: req.userId });
     if (!userdeleted)
       return next(new NotFoundError("User doesn't found in database"));
+
+    if (userdeleted.imgId) deleteImgCloudinary(userdeleted.imgId);
     res
       .status(200)
       .json({ message: "User deleted succesfully", user: userdeleted });
@@ -185,20 +189,39 @@ const addSongsToFavourite = async (req, res, next) => {
         new ValidationError("The body sent hasn't been created successfully"),
       );
 
-    const newSongsIds = await getSongsIdByName(req.body.favouriteSongs);
-    if (newSongsIds.length === 0)
+    const newSongs = await getSongsIdByName(req.body.favouriteSongs);
+    if (newSongs.length === 0)
       return next(
         new ValidationError("Neiter of the songs has been found in database"),
       );
 
-    const newFavouriteSongList = [...user.favouriteSongs, ...newSongsIds];
-    const updated = await User.findOneAndUpdate(
+    const reviewedSongs = splitDuplicateSongOrAlbum(
+      user.favouriteSongs,
+      newSongs,
+    );
+
+    if (reviewedSongs.toAdd.length === 0) {
+      return next(
+        new ValidationError("You haven't any song to add to your song list"),
+      );
+    }
+
+    const newFavouriteSongList = [
+      ...user.favouriteSongs,
+      ...reviewedSongs.toAdd,
+    ];
+    const updated = await User.findByIdAndUpdate(
       user._id,
       { favouriteSongs: newFavouriteSongList },
       { returnDocument: "after", runValidators: true },
     );
 
-    res.status(200).json(updated);
+    return res.status(200).json({
+      message: "Favourite songs updated successfully",
+      updated,
+      addedSongs: reviewedSongs.toAdd.length,
+      alreadyFavourite: reviewedSongs.duplicateList,
+    });
   } catch (error) {
     next(
       new AppError(
@@ -220,20 +243,39 @@ const addAlbumsToFavourite = async (req, res, next) => {
         new ValidationError("The body sent hasn't been created successfully"),
       );
 
-    const newAlbumsIds = await getAlbumsIdByName(req.body.favouriteAlbums);
-    if (newAlbumsIds.length === 0)
+    const newAlbums = await getAlbumsIdByName(req.body.favouriteAlbums);
+    if (newAlbums.length === 0)
       return next(
         new ValidationError("Neiter of the albums has been found in database"),
       );
 
-    const newFavouriteAlbumList = [...user.favouriteAlbums, ...newAlbumsIds];
-    const updated = await User.findOneAndUpdate(
+    const reviewedAlbums = splitDuplicateSongOrAlbum(
+      user.favouriteAlbums,
+      newAlbums,
+    );
+
+    if (reviewedAlbums.toAdd.length === 0) {
+      return next(
+        new ValidationError("You haven't any Album to add to your song list"),
+      );
+    }
+
+    const newFavouriteAlbumList = [
+      ...user.favouriteAlbums,
+      ...reviewedAlbums.toAdd,
+    ];
+    const updated = await User.findByIdAndUpdate(
       user._id,
       { favouriteAlbums: newFavouriteAlbumList },
       { returnDocument: "after", runValidators: true },
     );
 
-    res.status(200).json(updated);
+    res.status(200).json({
+      message: "Favourite Albums updated successfully",
+      updated,
+      addedAlbums: reviewedAlbums.toAdd.length,
+      alreadyFavourite: reviewedAlbums.duplicateList,
+    });
   } catch (error) {
     next(
       new AppError(
@@ -241,6 +283,24 @@ const addAlbumsToFavourite = async (req, res, next) => {
       ),
     );
   }
+};
+/* ==============
+  PRIVATE METHODS
+=================*/
+const splitDuplicateSongOrAlbum = (currentList, listToAdd) => {
+  const toAdd = [];
+  const duplicateList = [];
+
+  for (const item of listToAdd) {
+    const repeated = currentList.some((songId) => songId.equals(item._id));
+    if (repeated) duplicateList.push(item.title);
+    else toAdd.push(item._id);
+  }
+
+  return {
+    toAdd,
+    duplicateList,
+  };
 };
 
 export {
