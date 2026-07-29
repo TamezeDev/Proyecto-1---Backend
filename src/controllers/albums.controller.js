@@ -169,6 +169,25 @@ const modifyAlbum = async (req, res, next) => {
     );
   }
 };
+/* Delete album by id */
+const deleteAlbum = async (req, res, next) => {
+  try {
+    const deleted = await Album.findByIdAndDelete(req.params.id);
+
+    if (!deleted) {
+      return next(new NotFoundError("Album not found in database"));
+    }
+
+    return res.status(200).json({
+      message: "Album deleted successfully",
+      deleted,
+    });
+  } catch (error) {
+    return next(
+      new AppError(`Unexpected error deleting album -> ${error.message}`),
+    );
+  }
+};
 
 /* ==============
   PRIVATE METHODS
@@ -188,4 +207,4 @@ const getSongsIdByName = async (tracklist) => {
   return validSongs;
 };
 
-export { insertAlbum, getAlbums, getAlbumById, modifyAlbum };
+export { insertAlbum, getAlbums, getAlbumById, modifyAlbum, deleteAlbum };

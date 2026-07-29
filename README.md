@@ -256,7 +256,7 @@ body
 
 <br>
 
-3. Obetener un álbum por su id: 
+3. Obtener un álbum por su id: 
 
     Envío mediante GET a  http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2 
 
@@ -283,6 +283,18 @@ body
 ```
 - Se enviará el nombre del género y el nombre de las canciones de dicho ábum. En caso de no encontrarlos en la base de datos le mostrará aviso de qué canciones no se encuentra cancelando la operación
 
+<br>
+
+5. Eliminar un álbum por su id: 
+
+    Envío mediante DELETE a  http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2 
+
+
+  - El id debe corresponder al id del álbum que se quiere eliminar. Operación autorizada solo para admins
+
+<br>
+
+---
 ---
 
 ### Detalles
