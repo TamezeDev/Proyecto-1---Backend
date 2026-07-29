@@ -90,7 +90,7 @@ const modifySong = async (req, res, next) => {
         return next(new ValidationError("Selected genre does not exist"));
       }
 
-      updatedData.genre = req.body.genre;
+      updatedData.genre = genreExists._id;
     }
 
     const updatedSong = await Song.findByIdAndUpdate(song._id, updatedData, {

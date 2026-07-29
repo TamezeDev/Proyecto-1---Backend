@@ -263,6 +263,26 @@ body
 
   - El id debe corresponder al id del álbum que se quiere mostrar
 
+<br>
+
+4. Modificar un álbum enviando su id: 
+
+    Envío mediante PUT a  http://localhost:2000/api/v1/album/6a6612d11a59b98d2cb393a2 
+
+```javascript
+body
+{
+  "title": "Album modificado",
+  "rating": 6,
+  "genre": "Rock",
+  "tracklist": [
+    "Levels",
+    "Levitating"
+  ]
+}
+```
+- Se enviará el nombre del género y el nombre de las canciones de dicho ábum. En caso de no encontrarlos en la base de datos le mostrará aviso de qué canciones no se encuentra cancelando la operación
+
 ---
 
 ### Detalles

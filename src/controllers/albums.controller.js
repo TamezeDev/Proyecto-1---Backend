@@ -10,7 +10,7 @@ import {
 
 import { withoutBody } from "../../utils/validations.js";
 
-/* CREATE ALBUM */
+/* Create new album */
 const insertAlbum = async (req, res, next) => {
   try {
     if (withoutBody(req.body, next)) {
@@ -27,19 +27,7 @@ const insertAlbum = async (req, res, next) => {
         new ValidationError("The body sent hasn't been created successfully"),
       );
     }
-    const validSongs = [];
-    if (req.body.tracklist.length > 0) {
-      for (const songName of req.body.tracklist) {
-        const songFound = await Song.findOne({ title: songName });
-        if (!songFound)
-          next(new ValidationError(`Song ${songName} not found in database`));
-        else validSongs.push(songFound._id);
-      }
-    } else {
-      return next(
-        new ValidationError("You must send tracks included in this album"),
-      );
-    }
+    const validSongs = await getSongsIdByName(req.body.tracklist, next);
     if (validSongs.length === 0)
       return next(
         new ValidationError("Neiter of the songs has been found in database"),
@@ -117,4 +105,87 @@ const getAlbumById = async (req, res, next) => {
   }
 };
 
-export { insertAlbum, getAlbums, getAlbumById };
+/* Modify a album */
+const modifyAlbum = async (req, res, next) => {
+  try {
+    if (withoutBody(req.body, next)) return;
+
+    const album = await Album.findById(req.params.id);
+
+    if (!album) {
+      return next(new NotFoundError("Album not found in database"));
+    }
+
+    const updatedData = { ...req.body };
+
+    if (updatedData.genre) {
+      const genreExists = await Genre.findOne({ name: updatedData.genre });
+
+      if (!genreExists) {
+        return next(new ValidationError("Selected genre does not exist"));
+      }
+
+      updatedData.genre = genreExists._id;
+    }
+
+    if (updatedData.tracklist) {
+      if (!Array.isArray(updatedData.tracklist)) {
+        return next(
+          new ValidationError("Tracklist must be an array of song names"),
+        );
+      }
+
+      const validSongs = await getSongsIdByName(updatedData.tracklist, next);
+      if (validSongs.length === 0)
+        return next(
+          new ValidationError("Neiter of the songs has been found in database"),
+        );
+      updatedData.tracklist = validSongs;
+    }
+
+    const updatedAlbum = await Album.findByIdAndUpdate(
+      req.params.id,
+      updatedData,
+      {
+        returnDocument: "after",
+        runValidators: true,
+      },
+    )
+      .populate("genre")
+      .populate({
+        path: "tracklist",
+        populate: {
+          path: "genre",
+        },
+      });
+
+    return res.status(200).json({
+      message: "Album modified successfully",
+      updatedAlbum,
+    });
+  } catch (error) {
+    return next(
+      new AppError(`Unexpected failure modifying album -> ${error.message}`),
+    );
+  }
+};
+
+/* ==============
+  PRIVATE METHODS
+=================*/
+const getSongsIdByName = async (tracklist) => {
+  const validSongs = [];
+  if (tracklist.length > 0) {
+    for (const songName of tracklist) {
+      const songFound = await Song.findOne({ title: songName });
+      if (!songFound)
+        throw new ValidationError(`Song ${songName} not found in database`);
+      else validSongs.push(songFound._id);
+    }
+  } else {
+    throw new ValidationError("You must send tracks included in this album");
+  }
+  return validSongs;
+};
+
+export { insertAlbum, getAlbums, getAlbumById, modifyAlbum };
