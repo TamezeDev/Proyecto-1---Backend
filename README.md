@@ -42,19 +42,24 @@ Creación de un backend con node conectado a mongo atlas y almacenando imagenes 
 
 3. Copiar o crear el archivo `.env` en la raiz con el contenido del documento de claves aportado por email.
 
-4. Ejecutar el siguiente script para poblar la base de datos.
+4. Instalar las dependencias necesarias.
+    ```bash
+    npm i
+    ```
+
+5. Ejecutar el siguiente script para poblar la base de datos.
 
    ```bash
    npm run seeds
    ```
 
-5. Para iniciar el servidor lanzar desde la consola el siguiente script:
+6. Para iniciar el servidor lanzar desde la consola el siguiente script:
 
    ```bash
    npm run start
    ```
-
-6. Desde Postman, Thunder clientm, insomnia o similar hacer las peticiones a los endpoints para probar su funcionamiento.
+- Debe tener libre el puerto seleccionado en las variables de entorno, *por defecto:* **2000**
+7. Desde Postman, Thunder clientm, insomnia o similar hacer las peticiones a los endpoints para probar su funcionamiento.
 
 ## Acceso a endpoints
 
