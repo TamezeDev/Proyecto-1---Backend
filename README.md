@@ -138,8 +138,8 @@ http://localhost:2000/api/v1/user/login
 ```javascript
 body
 {
-  "email": "Paco@test.com",
-  "password": "Paco1234"
+  "email": "lucia@test.com",
+  "password": "lucia123"
 }
 ```
 
